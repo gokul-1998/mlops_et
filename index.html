@@ -1,169 +1,438 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MLOps Exam Quiz</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MLOps ET — Exact Questions & Answers</title>
 <style>
-* { box-sizing: border-box; }
-body {
-  margin: 0; font-family: Arial, sans-serif; background: #f4f7fb; color: #172033;
-}
-.container { max-width: 900px; margin: 0 auto; padding: 24px 16px 50px; }
-header {
-  background: #172033; color: white; padding: 28px; border-radius: 16px;
-  margin-bottom: 18px;
-}
-h1 { margin: 0 0 8px; font-size: 28px; }
-.subtitle { opacity: .85; }
-.progress-wrap { margin-top: 18px; background: #344056; border-radius: 20px; height: 10px; overflow: hidden; }
-.progress { height: 100%; width: 0%; background: #62d0ff; transition: width .2s; }
-.card {
-  background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px;
-  box-shadow: 0 4px 18px rgba(0,0,0,.07);
-}
-.question { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 18px; }
-.option {
-  display: block; padding: 13px 15px; border: 1px solid #d7deea; border-radius: 10px;
-  margin: 10px 0; cursor: pointer; transition: .15s;
-}
-.option:hover { background: #f5f9ff; border-color: #8ab8ff; }
-.option input { margin-right: 10px; }
-button {
-  border: 0; border-radius: 10px; padding: 13px 20px; font-size: 16px;
-  font-weight: 700; cursor: pointer; margin: 5px;
-}
-#submit { background: #1769e0; color: white; }
-#reset { background: #e8edf5; color: #172033; }
-#next { background: #198754; color: white; }
-.result {
-  display: none; background: white; border-radius: 16px; padding: 28px;
-  margin-top: 18px; box-shadow: 0 4px 18px rgba(0,0,0,.07);
-}
-.score { font-size: 38px; font-weight: 800; margin: 8px 0; }
-.correct { color: #16834b; }
-.wrong { color: #c62828; }
-.explanation {
-  margin-top: 8px; padding: 10px 12px; background: #f3f6fa; border-radius: 8px;
-  font-size: 14px;
-}
-.hidden { display: none !important; }
-.nav { text-align: center; margin: 20px 0; }
-.small { color: #667085; font-size: 13px; }
+*{box-sizing:border-box} body{margin:0;background:#f4f6f8;color:#17202a;font-family:Arial,sans-serif;line-height:1.5}
+.wrap{max-width:980px;margin:auto;padding:20px} header,.card,.result{background:#fff;border-radius:14px;padding:22px;margin-bottom:16px;box-shadow:0 3px 14px #00000012}
+h1{margin:0 0 6px} .muted{color:#667085} .q{font-weight:700;font-size:18px;margin-bottom:15px;white-space:pre-line}
+.option{display:block;border:1px solid #d7dde5;border-radius:9px;padding:11px 13px;margin:9px 0;cursor:pointer;transition:all .15s ease}
+.option:hover{background:#f7faff} .option input{margin-right:9px}
+.option.opt-correct{background:#ecfdf3;border-color:#12b76a;color:#027a48;font-weight:600}
+.option.opt-incorrect{background:#fef3f2;border-color:#f04438;color:#b42318}
+button{padding:11px 17px;border:0;border-radius:9px;font-weight:700;cursor:pointer;margin:4px}
+.primary{background:#1769e0;color:white} .secondary{background:#e8edf3}
+.check-btn{background:#087443;color:white}
+.retry-btn{background:#d97706;color:white}
+.progress{height:9px;background:#e4e8ed;border-radius:10px;overflow:hidden;margin-top:14px}
+.bar{height:100%;width:0%;background:#1769e0;transition:.2s}
+.nav{text-align:center} .result{display:none} .good{color:#087443} .bad{color:#b42318}
+.feedbackBox{padding:12px 16px;border-radius:8px;margin-top:14px;font-weight:600;font-size:15px}
+.feedbackBox.correct{background:#ecfdf3;color:#027a48;border-left:5px solid #12b76a}
+.feedbackBox.wrong{background:#fef3f2;color:#b42318;border-left:5px solid #f04438}
+.feedbackBox .feedbackActions{margin-top:10px}
+.ans-comparison{margin-top:8px;font-size:14px;display:flex;flex-direction:column;gap:4px}
+.ans-row{display:flex;align-items:baseline;gap:8px}
+.ans-label{color:#475467;font-weight:600;min-width:115px}
+.ans-tag{display:inline-block;padding:2px 8px;border-radius:6px;font-weight:700;font-size:13px}
+.ans-tag.your-ans{background:#fee4e2;color:#b42318;border:1px solid #fecdca}
+.ans-tag.your-ans-ok{background:#d1fadf;color:#027a48;border:1px solid #a6f4c5}
+.ans-tag.correct-ans{background:#d1fadf;color:#027a48;border:1px solid #a6f4c5}
+.repeatNotice{background:#eff8ff;border:1px solid #b2ddff;color:#175cd3;padding:10px 14px;border-radius:8px;margin-bottom:14px;font-size:14px;font-weight:600}
+
+/* Difficulty Tagging Styles */
+.card-header-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.difficulty-group{display:flex;align-items:center;gap:6px}
+.diff-btn{padding:5px 11px;font-size:12px;border-radius:20px;border:1px solid #d0d5dd;background:#f8fafc;color:#475467;cursor:pointer;font-weight:600;transition:all .15s ease;margin:0}
+.diff-btn:hover{background:#e2e8f0}
+.diff-btn.active.easy{background:#ecfdf3;border-color:#12b76a;color:#027a48}
+.diff-btn.active.medium{background:#fffaeb;border-color:#f79009;color:#b54708}
+.diff-btn.active.hard{background:#fef3f2;border-color:#f04438;color:#b42318}
+.diff-badge{display:inline-block;padding:3px 9px;border-radius:12px;font-size:12px;font-weight:700;margin-left:8px;text-transform:capitalize}
+.diff-badge.easy{background:#ecfdf3;color:#027a48;border:1px solid #a6f4c5}
+.diff-badge.medium{background:#fffaeb;color:#b54708;border:1px solid #fedf89}
+.diff-badge.hard{background:#fef3f2;color:#b42318;border:1px solid #fecdca}
+.repeat-group{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.repeat-btn{padding:9px 15px;border-radius:8px;font-size:13px;border:1px solid #d0d5dd;background:#fff;cursor:pointer;font-weight:700}
+.repeat-btn:hover{background:#f1f5f9}
+hr{border:0;border-top:1px solid #e5e7eb;margin:18px 0}
 </style>
 </head>
-<body>
-<div class="container">
+<body><div class="wrap">
 <header>
-  <h1>MLOps Exam Quiz</h1>
-  <div class="subtitle">Interactive quiz based on the supplied study package — Q164 to Q184</div>
-  <div class="progress-wrap"><div id="progress" class="progress"></div></div>
-  <div style="margin-top:10px" id="counter">Question 1 of 21</div>
+<h1>MLOps Exam — Exact Quiz</h1>
+<div class="muted">Questions 163–184. Immediate feedback supported. Wrong questions repeat every 5 questions.</div>
+<div class="progress"><div id="bar" class="bar"></div></div>
+<div id="counter" style="margin-top:8px">Question 1</div>
 </header>
-
-<div id="quiz"></div>
-
+<div id="noticeContainer"></div>
+<main id="quiz"></main>
 <div class="nav">
-  <button id="next" onclick="nextQuestion()">Next</button>
-  <button id="submit" onclick="submitQuiz()">Submit Quiz</button>
-  <button id="reset" onclick="resetQuiz()">Reset</button>
+<button class="secondary" onclick="prev()">Previous</button>
+<button class="check-btn" id="btnCheck" onclick="checkCurrentAnswer()">Check Answer</button>
+<button class="retry-btn" id="btnRetry" style="display:none" onclick="retryCurrentQuestion()">&#8634; Retry Question</button>
+<button class="primary" id="btnNext" onclick="next()">Next</button>
+<button class="primary" onclick="submitQuiz()">Submit Quiz</button>
+<button class="secondary" onclick="resetQuiz()">Reset</button>
 </div>
-
-<div id="result" class="result"></div>
+<section id="result" class="result"></section>
 </div>
-
 <script>
-const questions = [{"q": "Q164. Which data science lifecycle step does not require MLOps, DevOps suffices?", "type": "single", "options": ["A. Bias detection", "B. Model training & selection", "C. Feature engineering", "D. Champion/challenger evaluation and promotion", "E. Label drift detection"], "answer": ["C"]}, {"q": "Q165. Which set best represents governance concerns beyond model accuracy?", "type": "single", "options": ["A. Monitoring / Observability / Response", "B. CI/CD / Operations", "C. Logging / Tracing / Metrics", "D. Bias detection / Drift monitoring / Explainability", "E. Regulatory risk / Reputational harm / Change management"], "answer": ["D"]}, {"q": "Q166. What are the three production operations pillars?", "type": "single", "options": ["A. Monitoring / Observability / Response", "B. Detect / Understand / Act", "C. CI/CD / MLSecOps", "D. Explainability / Drift / Bias", "E. Infrastructure / Software / Configuration"], "answer": ["A"]}, {"q": "Q167. Which is NOT an example of a software-driven data source?", "type": "single", "options": ["A. OLTP DB backend PHP", "B. OpenAI-hosted endpoint", "C. Container logs", "D. Docker manifest", "E. CML report in GitHub"], "answer": ["D"]}, {"q": "Q168. Which use case is NOT well suited for an LLM?", "type": "single", "options": ["A. Macroeconomic policy reasoning", "B. Washing-machine manual targeted questions", "C. Rule-driven scanned-image classification", "D. Dynamic customer preference learning", "E. Risky-driving alerting from truck telematics"], "answer": ["E"]}, {"q": "Q169. In a Feast data model with PurchaseEvent as a fact and Customer/Channel/Product as dimensions, which statement is correct?", "type": "single", "options": ["A. PurchaseEvent is a dimension and Customer is a fact.", "B. Raw purchase events can be processed into features; dimensions act as entities.", "C. Feast cannot represent event-time data.", "D. Dimensions must always be stored as numerical features."], "answer": ["B"]}, {"q": "Q170. Which are valid Git basics?", "type": "multi", "options": ["A. Git tracks changes to files.", "B. git commit creates a commit.", "C. git status deletes untracked files.", "D. A branch is an independent repository.", "E. git clone copies a repository."], "answer": ["A", "B", "E"]}, {"q": "Q171. Which activities are within the scope of MLOps?", "type": "multi", "options": ["A. Model/data versioning", "B. Only writing model-training code", "C. CI/CD and automated testing", "D. Ignoring production monitoring", "E. Deployment and monitoring"], "answer": ["A", "C", "E"]}, {"q": "Q172. Which are examples of ML security attacks?", "type": "multi", "options": ["A. Data poisoning", "B. Model extraction", "C. Adversarial examples", "D. Membership inference", "E. Faster inference"], "answer": ["A", "C", "D"]}, {"q": "Q173. Which statements about Docker/Kubernetes/FastAPI are correct?", "type": "multi", "options": ["A. Docker packages applications into containers.", "B. Kubernetes can orchestrate containers.", "C. FastAPI is a Python web framework.", "D. Kubernetes is a database.", "E. Docker images can be used to create containers.", "F. FastAPI can expose HTTP APIs.", "G. Kubernetes can help with scaling."], "answer": ["A", "B", "E", "F", "G"]}, {"q": "Q174. Which statements correctly distinguish MLOps and LLMOps?", "type": "multi", "options": ["A. LLMOps includes concerns specific to LLM applications.", "B. MLOps and LLMOps are exactly identical in every concern.", "C. LLMOps can involve prompt/version management.", "D. MLOps covers model lifecycle and production operations.", "E. LLMOps has no evaluation concerns.", "F. LLM applications can require specialized observability."], "answer": ["A", "D", "F"]}, {"q": "Q175. Which are valid LLM cost-optimization approaches?", "type": "multi", "options": ["A. Caching repeated requests", "B. Always using the largest model", "C. Routing tasks to cheaper/smaller models when appropriate", "D. Increasing token usage unnecessarily", "E. Reducing unnecessary prompt/context tokens", "F. Monitoring token usage and cost"], "answer": ["A", "E", "F"]}, {"q": "Q176. Which are important aspects of observability?", "type": "multi", "options": ["A. Logs", "B. Randomly deleting metrics", "C. Metrics", "D. Ignoring traces", "E. Removing all alerts"], "answer": ["A", "C"]}, {"q": "Q177. Which CI/CD stages are relevant to classical ML?", "type": "multi", "options": ["I. Code testing", "II. Automatic deletion of production data", "III. Model/data validation", "IV. Build/deploy automation", "V. Disabling monitoring", "VI. Manual-only deployment", "VII. No version control", "VIII. Skipping tests", "IX. Ignoring artifacts", "X. Evaluation/quality checks"], "answer": ["I", "IV", "X"]}, {"q": "Q178. Which are valid Git-flow practices?", "type": "multi", "options": ["A. Work directly on protected main only", "B. Use feature branches for isolated work", "C. Never review changes", "D. Merge reviewed changes through the normal workflow", "E. Use pull requests for collaboration"], "answer": ["A", "D", "E"]}, {"q": "Q179. Which statements are correct for forecasting and feature consistency?", "type": "multi", "options": ["A. Training and serving features can use unrelated definitions.", "B. Point-in-time correctness matters for time-dependent features.", "C. Future information should be used freely during training.", "D. Feature consistency between training and serving is important.", "E. Leakage improves real-world reliability."], "answer": ["B", "D"]}, {"q": "Q180. Which tool is used for ML experiment tracking in the source material?", "type": "single", "options": ["A. MLflow", "B. Docker Compose", "C. Redis", "D. Nginx"], "answer": ["A"]}, {"q": "Q181. Which statements relate to LLMOps/RAG/production scaling?", "type": "multi", "options": ["A. RAG can ground generation using retrieved information.", "B. Production LLM systems need evaluation.", "C. Scaling concerns can include latency and throughput.", "D. RAG removes the need for monitoring.", "E. Prompt and model versions can matter in production."], "answer": ["B", "C", "E"]}, {"q": "Q182. Which are important ML data security/governance practices?", "type": "multi", "options": ["A. Access control", "B. Data lineage", "C. Give every user unrestricted access", "D. Ignore data provenance", "E. Auditing", "F. Protect sensitive data"], "answer": ["A", "B", "E", "F"]}, {"q": "Q183. Which are relevant to real-time inference/streaming?", "type": "multi", "options": ["A. Event streams can feed online inference pipelines.", "B. Real-time systems never have latency requirements.", "C. Online inference can require low-latency serving.", "D. Streaming is identical to batch processing in all respects."], "answer": ["A", "C"]}, {"q": "Q184. Which tools/workflows are relevant to GitHub Actions/CML/DVC?", "type": "multi", "options": ["A. GitHub Actions can automate CI workflows.", "B. DVC can version/manage data and model artifacts.", "C. CML is unrelated to CI.", "D. Automated evaluation can be reported in CI.", "E. DVC means Docker Version Control.", "F. CI can run tests on pushes/pull requests."], "answer": ["A", "B", "D", "F"]}];
-let current = 0;
+const qs=[{"num": 163, "type": "single", "q": "THIS IS QUESTION PAPER FOR THE SUBJECT \"DEGREE LEVEL : MACHINE LEARNING OPERATIONS (COMPUTER BASED EXAM)\"\n\nARE YOU SURE YOU HAVE TO WRITE EXAM FOR THIS SUBJECT?\nCROSS CHECK YOUR HALL TICKET TO CONFIRM THE SUBJECTS TO BE WRITTEN.\n(IF IT IS NOT THE CORRECT SUBJECT, PLS CHECK THE SECTION AT THE TOP FOR THE SUBJECTS REGISTERED BY YOU)", "options": ["YES", "NO"], "answer": ["A"]}, {"num": 164, "type": "single", "q": "Which of the following steps in the data science lifecycle do not require MLOps to manage but DevOps suffices?", "options": ["Bias detection", "Model training & selection", "Feature engineering", "Champion and challenger model evaluation and promotion", "Label drift detection"], "answer": ["C"]}, {"num": 165, "type": "single", "q": "In what way can effective governance of ML systems be realized beyond just accuracy measurement?", "options": ["Monitoring, Observability, Response", "Continuous integration, Continuous Delivery, Operations", "Logging, Tracing, Metrics Collection", "Bias detection, Drift monitoring & Explainability", "Regulatory risk, Reputational harm & Change management."], "answer": ["D"]}, {"num": 166, "type": "single", "q": "Which of the following captures the 3 pillars of production operations?", "options": ["Monitoring, Observability, Response", "Detect, Understand, Act", "CI, CD, MLSecOps", "Explainability, Drift Monitoring, Bias Detection", "Infrastructure, Software, Configuration"], "answer": ["A"]}, {"num": 167, "type": "single", "q": "Which of the below is not an example of a software-driven data source?", "options": ["OLTP database that serves as the backend to a PHP application", "OpenAI-hosted URL endpoint that serves your custom-trained GPT", "Logs from containers", "Docker manifest file", "CML report in a Github repo"], "answer": ["D"]}, {"num": 168, "type": "single", "q": "For which of the following use cases is an LLM NOT well suited?", "options": ["Reasoning about macroeconomic implications of a country’s finance policy.", "Answering targeted questions about features of a washing machine from its user manual.", "Performing rule-driven classification of scanned images, submitted as supporting documents to a bank as part of account opening, into categories of document types pertaining to ID proof and address proof.", "Incorporating dynamic learning about customer preferences for customer servicing.", "Building a “risky driving” alerting system using telematics data from trucks, where sensors track and record location, movement, driving behaviour, and vehicle health."], "answer": ["E"]}, {"num": 169, "type": "single", "q": "The data schema of the input data in a new ML project comprises of a Fact table (PurchaseEvent) recording purchases made by customers via various channels (namely online portal, WhatsApp, call center, offline store) along with associated Dimension tables that describe all the customers (Customer), each channel (Online, WhatsApp, CallCenter, OfflinePointOfSale), and each product (Product). How would you design the Feast data model to support ML development?", "options": ["Every Dimension table is a Feast entity. The PurchaseEvent Fact table becomes a FeatureView.", "The PurchaseEvent Fact table becomes a Feast entity. Each Dimension table is a FeatureView with the Fact entity linked to it.", "The PurchaseEvent Fact table needs to be processed further to create useful features (e.g. using aggregations over the purchase events). That processed table becomes a FeatureView. Every Dimension table is a Feast entity that is linked to that FeatureView.", "Join the Fact and Dimension tables together to create one large denormalized table. Summarize from this table into useful features (e.g. using aggregations over purchase events). Make this the FeatureView. No entity required to be specified separately."], "answer": ["C"]}, {"num": 170, "type": "multi", "q": "Which of the following statements regarding git are true?", "options": ["“git checkout -b branch” will not work if the branch does not exist.", "A pull request is used to merge 2 branches", "On “git commit”, all collaborators in the repo can see the changes immediately.", "“git push origin feature/my-cool-idea” pushes code from the local branch “feature/my-cool-idea” to the local branch “origin”.", "On “git pull”, all changes in the current branch are downloaded from remote."], "answer": ["B", "E"]}, {"num": 171, "type": "multi", "q": "Which of the below are part of what MLOps manages?", "options": ["ML models", "Not the actual LLM itself since that is large and proprietary, only its architecture", "Data engineering code", "Only small data since big data isn’t effectively managed via versioning systems", "k8s(Kubernetes) configuration files"], "answer": ["A", "C", "E"]}, {"num": 172, "type": "multi", "q": "Which of the below definitions of security attacks on ML systems are correct?", "options": ["Identifying which patient’s data has been used in a heart attack prediction model is an example of membership inference attack.", "Cloning a live API and stealing away live traffic is an example of man-in-the-middle attack.", "Fooling a vehicle by making it understand red signals as orange is an example of evasion attack.", "Figuring out which facial patterns are known to cause a positive match in a criminal matching system is an example of inversion attack.", "Feeding wrong data samples is an example of enrichment attack."], "answer": ["A", "C", "D"]}, {"num": 173, "type": "multi", "q": "Which of the following statements regarding model deployment are true?", "options": ["Once a Docker image is created, the Dockerfile is no longer required to deploy the image.", "The Registry allows for having independent development machines where Docker images are created, separate from a common container execution environment like k8s.", "The annotation ‘@app.post(“/predict”)’ tells FastAPI that this app can receive all HTTP request types for the endpoint “/predict”.", "A K8s cluster takes time to spin up because containers are heavyweight and take time to deploy on host machines.", "A custom web service using FastAPI is better than a k8s cluster of containers only for fast iterations on development and testing.", "A pod is the smallest unit of deployment in k8s, and comprises of one or more containers.", "The benefits of k8s over using plain Docker are ability to scale and have easier management of containers"], "answer": ["A", "B", "E", "F", "G"]}, {"num": 174, "type": "multi", "q": "A candidate you are looking to hire in your LLMOps team is negotiating hard on his salary by stating that LLMOps is significantly more complex than MLOps and therefore requires a higher pay than what you have benchmarked. As the hiring manager, which of the below arguments would you use to counter that?", "options": ["Source data provenance and lineage tracking is the same effort for any type of model.", "Accuracy testing is the same for any type of model.", "Securing the model requires a similar level of work and tooling.", "Monitoring and responding requires the same level of hands-on expertise and time across any model type.", "Cost analysis and optimizations to be carried out are similar.", "Team collaboration and end-to-end ownership has similar responsibilities, doesn’t matter the model type."], "answer": ["A", "D", "F"]}, {"num": 175, "type": "multi", "q": "A code-generation SaaS product uses OpenAI’s GPT-5 behind the scenes as its LLM. Due to the excellent performance of the product, the uptake in usage became very high quickly. This led the Chief Revenue Officer to claim they would hit the next milestone in sales within 2 quarters, enabling the founders to seek more funding for the next stage of growth. However, the CFO sounded a red alert that the cost per dollar of sales had not come down but was in fact remaining stagnant despite the exponential growth in revenue. In digging deeper, the component of the cost that was primarily driving this was the spend on OpenAI. As the Chief Product Officer, which of these mechanisms can you reasonably put in place within 1 month in order to break the linear relationship of cost to revenue by the end of this quarter?", "options": ["Instrument tracing and metrics collection to understand the GPT usage in detail.", "Introduce product analytics in every product module, analyze which features are least used or most iterated but also use GPT heavily, and then weed these features out.", "Build custom replacements for all GPT usage using DeepSeek by leveraging distillation.", "Use self-hosted GPU hardware for the OpenAI usage to save on GPU costs.", "Identify repeat GPT querying patterns and introduce caching for such query-response pairs.", "Build quantized custom equivalents of GPT for simpler LLM usage using open source base models from LLaMa or DeepSeek."], "answer": ["A", "E", "F"]}, {"num": 176, "type": "multi", "q": "At a bank, the production analytics workloads are for internal use cases only and therefore behind a walled garden. That is, all servers in production serving ML models are not accessible to anybody but the production support team. The ML serving servers are commodity Linux machines with no software to run containers, and with no connection to any cloud-based software either. All infrastructure in the bank, including these servers, is instrumented with Prometheus as a bank standard for metrics collection. What is the minimum set of additional data the analytics team needs for providing effective troubleshooting and governance support for their ML models?", "options": ["Logs from the ML serving servers are needed to get detailed records of model executions.", "CPU and GPU utilization are needed to know model efficiency and scalability.", "Tracing across the various servers is needed for effective debugging across dependent services end-to-end.", "Kubernetes logs are required to be collected to enable detailed troubleshooting.", "Metrics for every external requestor (e.g. queries per source IP address per minute) are needed to assess security-related abuse.", "Kernel logs are necessary to debug security loopholes in the Linux machines."], "answer": ["A", "C"]}, {"num": 177, "type": "multi", "q": "Which of the following steps is NOT recommended in a CI/CD approach for classical ML models?\n\nI. Use Git-flow & “Deploy Model” lifecycle patterns.\nII. Use a repo system like Github, along with CML and MLflow as tooling\nIII. Commit code in feature branch\nIV. Automated approval from feature branch to develop branch\nV. CD pipeline after merging, to run the new model in staging env\nVI. Automated step of running on staging & measuring model performance\nVII. CI when raising a PR for merging with main / release branch\nVIII. Manual approval to merge with main\nIX. CD pipeline after merging, to train the new model in prod env\nX. Promote the trained model directly to production usage.", "options": ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"], "answer": ["A", "D", "J"]}, {"num": 178, "type": "multi", "q": "Consider the following git usage model in a company.\n\n“There’s a main branch in the Github repo. Every feature or bugfix is coded on the main branch and pushed to remote.”\n\nWhat changes will you introduce to make this follow the Git-flow model for CI/CD?", "options": ["Use a “develop” branch separate from “main” to separate new development from code that is live in production.", "Do not push to remote from local until a pull request is raised and approved.", "Only code critical bug fixes directly in “main”, not new features.", "Use tags for each new version of the code in “main”.", "Create a separate branch for each feature, and once successfully implemented and tested, merge into “develop” using a pull request."], "answer": ["A", "D", "E"]}, {"num": 179, "type": "multi", "q": "At your company, management uses Excel spreadsheet to manually extrapolate quarterly revenue projections from monthly numbers. The method has yielded poor quality of predictions so far. Sales consistently reports higher revenue every week while finance undercounts recognized revenue in their monthly reporting. Management believes the “truth” is somewhere in between. You are tasked to solve the problem quickly and efficiently. Which of the below activities constitute your strategy to achieve the objective?", "options": ["Use a PyTorch-based deep learning model for programmatic forecasting instead of manual extrapolations.", "Use one of the available forecasting functions within Excel instead of manual extrapolations.", "Feed the forecast directly with data from both sales and finance teams.", "Compute a common set of features that both sales and finance teams agree on, including and especially “revenue”, using Feast and then feed into the forecast"], "answer": ["B", "D"]}, {"num": 180, "type": "single", "q": "Your first prototype for a new ML project focused on building a data science model with the best performance. Your business leader has now given the approval to productionize the model. Which of the below options is a step you would take to ensure that the way you arrived at your final model is logged so that future data scientists know why you rejected some model types and some hyperparameter values?", "options": ["Configure a central MLflow server, and use that MLflow for tracking every experiment and for hyperparameter tuning.", "Use logging through Python print commands and rely on container log collection of GCP.", "Use sklearn’s automl so that you don’t have to go through various model types or hyperparameter values in the first place.", "Create a Github repo for the code, push to the repo for each code change you produce due to a model change or hyperparameter value change, and use CML for logging model metrics.", "Containerize your model using docker and run the container using k8s leveraging GKE, which brings all necessary logging in production."], "answer": ["A"]}, {"num": 181, "type": "multi", "q": "An AI entrepreneur wanted to publish “real” stories about human rights which mainstream media was not capturing due to self-censorship.\n\nShe felt that uncensored, raw news is best obtained live from Reddit and X (formerly Twitter). She built both a batch and near-real-time data extractor for the appropriate subreddits and for a curated set of hashtags from X.\n\nWith the batch extractor, she got the past 12 months of history for these topics, and pretrained a LLM using Gemma2-9B as the base. She further finetuned the model by hand-engineering about 1000 data samples along with some validation data. She then built a daily pipeline that aggregated the near real-time data as daily news documents stored in a RAG database and constructed a search index on a vectorized form of the documents for the LLM to be able to look up the latest news.\n\nThe infrastructure used was similar in size to the technologies and instances used in the Week 10 and 11 assignments. Namely, she used a typical assignment-type GPU machine for deploying the LLM using custom scripting. Finally, she gave some few-shot examples and launched the LLM model behind a WhatsApp channel called “Know Your Human Rights”. The channel received a lot of attention, and many consumers tried it out of curiosity and support for the cause.\n\nWhat problems did these consumers encounter in the first month after the launch?", "options": ["The LLM performance at the end of the month was very bad as it could not search through the daily news documents collected in the RAG database.", "The LLM hallucinated since there was no data curation in the pretraining, finetuning or in the RAG.", "Along with news, the LLM started giving misinformed opinions that were at times actively toxic since there was no screening for the data being ingested from the sources.", "The LLM became stale since it was built using older data while the latest news did not get added to the model itself but was only usable by retrieval.", "The LLM kept crashing intermittently without giving a response due to lack of batching, underprovisioned resources, and inefficient resource usage in the face of significant interest from consumers."], "answer": ["B", "C", "E"]}, {"num": 182, "type": "multi", "q": "As the Chief Data Officer in an enterprise, you are asked by the Chief Information Security Officer to help with the important activity of eliminating, or at least minimizing, the security risks associated with data used in ML production models. The data estate comprises of various sources spread across the enterprise that feed data into a central data lake from which ML models get built using custom pipelines.\n\nWhich of the following risks are worth calling out?", "options": ["Data cannot be trusted unless provenance and data lineage back to the source is established by the data lake. This helps minimize the risks of data poisoning.", "Each custom pipeline building its own ML model introduces security risks in the code associated with feature engineering. Centralizing all features into a single feature store will minimize code-level risks.", "The data lake cannot be trusted to deliver the right data at the right time. So, extending the custom ML pipelines all the way back to source such that each model is in control of its source extraction ensures full traceability.", "Drift in data would mean models become outdated, so encouraging retraining models is best to minimize the risk of model irrelevance.", "ML models are artifacts that need protection. Encrypt them and store in secure model registries.", "Gatekeep the model serving infrastructure to minimize risks from probing and leakage through repetitive use."], "answer": ["A", "B", "E", "F"]}, {"num": 183, "type": "multi", "q": "An online portal for paying guest rentals identifies suspicious listings using a Scikit-learn based fraud model. The model is run every midnight using its joblib instance from within a Jupyter notebook on a 8-CPU server, processing the datafile having that day’s new listings. Since the portal has become very popular, it now sees 1 new listing every second. The company wants to bring down a fraudulent listing within 5 minutes of being posted. You are tasked with making changes to the above pipeline.\n\nWhich of the below changes are necessary for meeting the objectives?", "options": ["Enable the “streaming inference” mode in scikit-learn.", "Containerize the model using Docker and execute using k8s (Kubernetes).", "Feed the listings in near real-time into a message bus like Apache Kafka, develop new stream processing code using Spark Streaming, and invoke the model as an API from within the code.", "Attach a GPU accelerator to the server for faster processing and switch to using PyTorch.", "Run the model on the edge by deploying the same Jupyter notebook on the web server where the portal accepts new listings."], "answer": ["B", "C"]}, {"num": 184, "type": "multi", "q": "An MLOps newbie is given the task of introducing CI in a prototype ML project that has been cleared for production usage. The code finetunes a BERT model for a document classification task using a custom dataset of about a million high-quality labelled documents. While the code is hosted on Github free tier for organizations, the training data is present in a company Red Hat Enterprise Linux (RHEL) server. Being a freshly minted student of this course, the engineer decides to use DVC locally on that server for versioning the data, and CML with Github actions to run tests on the model. He sets up the workflow yaml file as below:\n\nname: CML\non: [push]\njobs:\n  train_and_report:\n    runs-on: ubuntu-latest\n    steps:\n    - uses: iterative/setup-cml@v1\n    - uses: actions/checkout@v3\n    - name: Train model\n      run: python train.py\n    - name: Create CML report\n      run: |\n        cat metrics.txt >> report.md\n        cml comment create report.md\n\nAs experienced MLOps engineers, what potential problems can you anticipate with the above?", "options": ["The CML action will fail because there is no token set to interact with Github.", "The Github action runner cannot run large workloads, so the step for training the model will run into resource issues and fail.", "The Github action will fail because the company server’s Linux distribution (RHEL) doesn’t match with the Linux container version specified in the workflow (Ubuntu)", "Since the Github action is set to trigger on every push, each branch change that is committed will trigger the entire model training thus running into Github free tier usage limits for the month.", "Since the Github action is set to trigger on every push, only the merge into the main branch runs the model, thus losing the benefits of doing CI on every change.", "The Github action doesn’t specify any tests to run, so the primary objective of CI is missing."], "answer": ["A", "B", "D", "F"]}];
+
+let queue = [];
+let currentIndex = 0;
 let answers = {};
-let submitted = false;
+let checkedStatus = {};
+let answeredCount = 0;
+let wrongInCurrentBatch = [];
+
+const STORAGE_KEY = 'mlops_difficulty_tags';
+const PROGRESS_KEY = 'mlops_quiz_progress';
+
+function getSavedDifficulties() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  } catch(e) {
+    return {};
+  }
+}
+
+function saveDifficulty(qNum, level) {
+  const current = getSavedDifficulties();
+  if (current[qNum] === level) {
+    delete current[qNum];
+  } else {
+    current[qNum] = level;
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(current));
+  render();
+}
+
+function saveSession() {
+  try {
+    const session = {
+      queue,
+      currentIndex,
+      answers,
+      checkedStatus,
+      answeredCount,
+      wrongInCurrentBatch
+    };
+    localStorage.setItem(PROGRESS_KEY, JSON.stringify(session));
+  } catch(e) {}
+}
+
+function loadSession() {
+  try {
+    const raw = localStorage.getItem(PROGRESS_KEY);
+    if (!raw) return false;
+    const session = JSON.parse(raw);
+    if (session && Array.isArray(session.queue) && session.queue.length > 0) {
+      queue = session.queue;
+      currentIndex = typeof session.currentIndex === 'number' ? session.currentIndex : 0;
+      answers = session.answers || {};
+      checkedStatus = session.checkedStatus || {};
+      answeredCount = session.answeredCount || 0;
+      wrongInCurrentBatch = session.wrongInCurrentBatch || [];
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+function initQueue(customQuestionIndices = null, forceNew = false) {
+  if (!forceNew && !customQuestionIndices && loadSession()) {
+    return;
+  }
+  if (customQuestionIndices && customQuestionIndices.length > 0) {
+    queue = customQuestionIndices.map(idx => ({ qIndex: idx, isRepeat: false }));
+  } else {
+    queue = qs.map((q, idx) => ({ qIndex: idx, isRepeat: false }));
+  }
+  currentIndex = 0;
+  answers = {};
+  checkedStatus = {};
+  answeredCount = 0;
+  wrongInCurrentBatch = [];
+  saveSession();
+}
 
 function render() {
-  const q = questions[current];
-  document.getElementById("counter").textContent =
-    `Question ${current + 1} of ${questions.length}`;
-  document.getElementById("progress").style.width =
-    `${((current + 1) / questions.length) * 100}%`;
+  const item = queue[currentIndex];
+  if (!item) return;
+  const q = qs[item.qIndex];
+  const saved = answers[currentIndex] || [];
+  const isChecked = checkedStatus[currentIndex];
+  const difficulties = getSavedDifficulties();
+  const currentDiff = difficulties[q.num] || '';
 
-  let inputType = q.type === "multi" ? "checkbox" : "radio";
-  let saved = answers[current] || [];
-  let options = q.options.map((opt, i) => {
-    let letter = opt.substring(0, opt.indexOf("."));
-    let checked = saved.includes(letter) ? "checked" : "";
-    return `<label class="option">
-      <input type="${inputType}" name="q" value="${letter}" ${checked}>
-      ${opt}
-    </label>`;
-  }).join("");
+  document.getElementById('counter').textContent = `Question ${currentIndex + 1} of ${queue.length} (Q${q.num})${item.isRepeat ? ' [Review / Repeat]' : ''}`;
+  document.getElementById('bar').style.width = (((currentIndex + 1) / queue.length) * 100) + '%';
 
-  document.getElementById("quiz").innerHTML = `
-    <div class="card">
-      <div class="question">${q.q}</div>
-      <div class="small">${q.type === "multi" ? "Select all that apply." : "Select one answer."}</div>
-      ${options}
+  const notice = document.getElementById('noticeContainer');
+  if (item.isRepeat) {
+    notice.innerHTML = `<div class="repeatNotice">Reviewing missed question (Q${q.num}). Give it another try!</div>`;
+  } else {
+    notice.innerHTML = '';
+  }
+
+  const type = q.type === 'multi' ? 'checkbox' : 'radio';
+  let feedbackHtml = '';
+
+  if (isChecked) {
+    const isCorrect = isChecked.isCorrect;
+    const formatLetters = (letters) => {
+      if (!letters || letters.length === 0) return '(None selected)';
+      return letters.slice().sort().map(l => {
+        const optIdx = l.charCodeAt(0) - 65;
+        const optText = q.options[optIdx];
+        if (optText && optText.length <= 15) {
+          return `${l} (${optText})`;
+        }
+        return l;
+      }).join(', ');
+    };
+
+    const userSelected = formatLetters(saved);
+    const correctAns = formatLetters(q.answer);
+
+    feedbackHtml = `<div class="feedbackBox ${isCorrect ? 'correct' : 'wrong'}">
+      <div>${isCorrect ? '&#10004; Correct!' : '&#10008; Incorrect!'}</div>
+      <div class="ans-comparison">
+        <div class="ans-row">
+          <span class="ans-label">Your answer:</span>
+          <span class="ans-tag ${isCorrect ? 'your-ans-ok' : 'your-ans'}">${escapeHtml(userSelected)}</span>
+        </div>
+        <div class="ans-row">
+          <span class="ans-label">Correct answer:</span>
+          <span class="ans-tag correct-ans">${escapeHtml(correctAns)}</span>
+        </div>
+      </div>
+      ${!isCorrect ? `<div class="feedbackActions"><button class="retry-btn" onclick="retryCurrentQuestion()">&#8634; Retry Question</button></div>` : ''}
     </div>`;
+  }
+
+  document.getElementById('quiz').innerHTML = `<div class="card">
+    <div class="card-header-row">
+      <div class="muted">${q.type === 'multi' ? 'Multiple Select — select all correct answers.' : 'Multiple Choice — select one answer.'}</div>
+      <div class="difficulty-group">
+        <span class="muted" style="font-size:12px;font-weight:600">Mark:</span>
+        <button type="button" class="diff-btn ${currentDiff === 'easy' ? 'active easy' : ''}" onclick="saveDifficulty(${q.num}, 'easy')">Easy</button>
+        <button type="button" class="diff-btn ${currentDiff === 'medium' ? 'active medium' : ''}" onclick="saveDifficulty(${q.num}, 'medium')">Medium</button>
+        <button type="button" class="diff-btn ${currentDiff === 'hard' ? 'active hard' : ''}" onclick="saveDifficulty(${q.num}, 'hard')">Hard</button>
+      </div>
+    </div>
+    <div class="q">Q${q.num}. ${escapeHtml(q.q)}</div>
+    ${q.options.map((opt, j) => {
+      const letter = String.fromCharCode(65 + j);
+      const isSelected = saved.includes(letter);
+      let optClass = 'option';
+      if (isChecked) {
+        if (q.answer.includes(letter)) optClass += ' opt-correct';
+        else if (isSelected) optClass += ' opt-incorrect';
+      }
+      return `<label class="${optClass}">
+        <input type="${type}" name="answer" value="${letter}" ${isSelected ? 'checked' : ''} ${isChecked ? 'disabled' : ''} onchange="onSelectOption()">
+        ${letter}. ${escapeHtml(opt)}
+      </label>`;
+    }).join('')}
+    ${feedbackHtml}
+  </div>`;
+
+  const btnNext = document.getElementById('btnNext');
+  if (btnNext) {
+    btnNext.textContent = isChecked ? 'Continue &#8594;' : 'Next (Check)';
+  }
+
+  const btnRetry = document.getElementById('btnRetry');
+  if (btnRetry) {
+    btnRetry.style.display = (isChecked && !isChecked.isCorrect) ? 'inline-block' : 'none';
+  }
 }
 
-function saveCurrent() {
-  const selected = [...document.querySelectorAll('input[name="q"]:checked')]
-    .map(x => x.value);
-  answers[current] = selected;
+function escapeHtml(s) {
+  return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'","&#039;").replaceAll('\n','<br>');
 }
 
-function nextQuestion() {
-  saveCurrent();
-  if (current < questions.length - 1) {
-    current++;
+function saveCurrentAnswer() {
+  answers[currentIndex] = [...document.querySelectorAll('input[name=answer]:checked')].map(x => x.value);
+  saveSession();
+}
+
+function onSelectOption() {
+  saveCurrentAnswer();
+}
+
+function checkCurrentAnswer() {
+  if (checkedStatus[currentIndex]) return;
+  saveCurrentAnswer();
+  evaluateCurrentQuestion();
+  render();
+}
+
+function retryCurrentQuestion() {
+  delete answers[currentIndex];
+  delete checkedStatus[currentIndex];
+  saveSession();
+  render();
+}
+
+function evaluateCurrentQuestion() {
+  const item = queue[currentIndex];
+  const q = qs[item.qIndex];
+  const selected = (answers[currentIndex] || []).slice().sort();
+  const correct = q.answer.slice().sort();
+  const isCorrect = JSON.stringify(selected) === JSON.stringify(correct);
+
+  checkedStatus[currentIndex] = { isCorrect, selected };
+
+  if (!isCorrect && !wrongInCurrentBatch.includes(item.qIndex)) {
+    wrongInCurrentBatch.push(item.qIndex);
+  }
+
+  answeredCount++;
+
+  // Every 5 questions, schedule the wrong questions to repeat immediately next in the queue
+  if (answeredCount % 5 === 0 && wrongInCurrentBatch.length > 0) {
+    const repeats = wrongInCurrentBatch.map(qIdx => ({ qIndex: qIdx, isRepeat: true }));
+    queue.splice(currentIndex + 1, 0, ...repeats);
+    wrongInCurrentBatch = [];
+  }
+  saveSession();
+}
+
+function next() {
+  saveCurrentAnswer();
+
+  // First click on Next: check answer and show feedback if not already checked
+  if (!checkedStatus[currentIndex]) {
+    evaluateCurrentQuestion();
     render();
-    window.scrollTo({top: 0, behavior: "smooth"});
+    return;
+  }
+
+  // Second click on Next (Continue): move to next question in the queue
+  if (currentIndex < queue.length - 1) {
+    currentIndex++;
+    saveSession();
+    render();
+    window.scrollTo(0, 0);
   } else {
     submitQuiz();
   }
 }
 
+function prev() {
+  saveCurrentAnswer();
+  if (currentIndex > 0) {
+    currentIndex--;
+    saveSession();
+    render();
+    window.scrollTo(0, 0);
+  }
+}
+
 function submitQuiz() {
-  saveCurrent();
+  saveCurrentAnswer();
   let score = 0;
-  let attempted = 0;
-  let details = "";
+  let detail = '';
+  const difficulties = getSavedDifficulties();
 
-  questions.forEach((q, i) => {
-    const user = (answers[i] || []).slice().sort();
-    const correct = q.answer.slice().sort();
-    if (user.length) attempted++;
+  let hardCount = 0, medCount = 0, easyCount = 0;
+  Object.values(difficulties).forEach(val => {
+    if (val === 'hard') hardCount++;
+    else if (val === 'medium') medCount++;
+    else if (val === 'easy') easyCount++;
+  });
 
-    const ok = JSON.stringify(user) === JSON.stringify(correct);
+  // Calculate score based on unique original questions answered correctly on their first attempt
+  qs.forEach((q, originalIdx) => {
+    let queueIdx = queue.findIndex(item => item.qIndex === originalIdx);
+    let userAns = queueIdx !== -1 ? (answers[queueIdx] || []).slice().sort() : [];
+    let correct = q.answer.slice().sort();
+    let ok = userAns.length > 0 && JSON.stringify(userAns) === JSON.stringify(correct);
     if (ok) score++;
 
-    details += `<div style="margin:12px 0" class="${ok ? "correct" : "wrong"}">
-      <b>${q.q.split(".")[0]}: ${ok ? "Correct" : "Wrong"}</b>
-      ${!ok ? `<div class="explanation">Correct answer: ${q.answer.join(", ")}</div>` : ""}
+    const diffTag = difficulties[q.num] ? `<span class="diff-badge ${difficulties[q.num]}">${difficulties[q.num]}</span>` : '';
+    const formatLetters = (letters) => {
+      if (!letters || letters.length === 0) return '(None selected)';
+      return letters.slice().sort().map(l => {
+        const optIdx = l.charCodeAt(0) - 65;
+        const optText = q.options[optIdx];
+        if (optText && optText.length <= 15) {
+          return `${l} (${optText})`;
+        }
+        return l;
+      }).join(', ');
+    };
+    const userDisplay = formatLetters(userAns);
+    const correctDisplay = formatLetters(q.answer);
+
+    detail += `<div style="margin:10px 0;padding:10px 14px;border-radius:8px;background:${ok ? '#f6fef9' : '#fffbfa'};border:1px solid ${ok ? '#d1fadf' : '#fee4e2'}">
+      <p class="${ok ? 'good' : 'bad'}" style="margin:0 0 6px;"><b>Q${q.num} — ${ok ? 'Correct' : 'Incorrect'}</b>${diffTag}</p>
+      <div class="ans-comparison">
+        <div class="ans-row">
+          <span class="ans-label">Your answer:</span>
+          <span class="ans-tag ${ok ? 'your-ans-ok' : 'your-ans'}">${escapeHtml(userDisplay)}</span>
+        </div>
+        ${!ok ? `<div class="ans-row">
+          <span class="ans-label">Correct answer:</span>
+          <span class="ans-tag correct-ans">${escapeHtml(correctDisplay)}</span>
+        </div>` : ''}
+      </div>
     </div>`;
   });
 
-  const percent = Math.round((score / questions.length) * 100);
-  document.getElementById("result").style.display = "block";
-  document.getElementById("result").innerHTML = `
-    <h2>Quiz Result</h2>
-    <div class="score">${score} / ${questions.length}</div>
-    <p><b>${percent}%</b> &nbsp; | &nbsp; Attempted: ${attempted} / ${questions.length}</p>
-    <hr>
-    ${details}
+  const pct = Math.round((score / qs.length) * 100);
+  const r = document.getElementById('result');
+  r.style.display = 'block';
+
+  let repeatControls = `
+    <div style="margin-top:16px;background:#f8fafc;padding:14px;border-radius:10px;border:1px solid #e2e8f0;">
+      <h3 style="margin:0 0 8px;">Repeat Questions by Tag:</h3>
+      <div class="repeat-group">
+        <button class="repeat-btn" onclick="startCustomPractice('hard')">Repeat Hard (${hardCount})</button>
+        <button class="repeat-btn" onclick="startCustomPractice('medium')">Repeat Medium (${medCount})</button>
+        <button class="repeat-btn" onclick="startCustomPractice('hard_medium')">Repeat Hard + Medium (${hardCount + medCount})</button>
+        <button class="repeat-btn" onclick="startCustomPractice('easy')">Repeat Easy (${easyCount})</button>
+        <button class="repeat-btn" onclick="resetQuiz()">Start Fresh Quiz (${qs.length})</button>
+      </div>
+    </div>
   `;
-  submitted = true;
-  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+
+  r.innerHTML = `<h2>Result: ${score} / ${qs.length} (${pct}%)</h2>
+    <p>Answers are based on the supplied exam material.</p>
+    ${repeatControls}
+    <hr>${detail}`;
+  r.scrollIntoView({ behavior: 'smooth' });
+}
+
+function startCustomPractice(filterType) {
+  const difficulties = getSavedDifficulties();
+  let indices = [];
+
+  qs.forEach((q, idx) => {
+    const diff = difficulties[q.num];
+    if (filterType === 'hard' && diff === 'hard') indices.push(idx);
+    else if (filterType === 'medium' && diff === 'medium') indices.push(idx);
+    else if (filterType === 'easy' && diff === 'easy') indices.push(idx);
+    else if (filterType === 'hard_medium' && (diff === 'hard' || diff === 'medium')) indices.push(idx);
+  });
+
+  if (indices.length === 0) {
+    alert(`No questions currently marked as "${filterType.replace('_', ' ')}". Tag some questions on the card header first!`);
+    return;
+  }
+
+  localStorage.removeItem(PROGRESS_KEY);
+  initQueue(indices, true);
+  document.getElementById('result').style.display = 'none';
+  render();
+  window.scrollTo(0, 0);
 }
 
 function resetQuiz() {
-  current = 0;
-  answers = {};
-  submitted = false;
-  document.getElementById("result").style.display = "none";
+  localStorage.removeItem(PROGRESS_KEY);
+  initQueue(null, true);
+  document.getElementById('result').style.display = 'none';
   render();
-  window.scrollTo({top: 0, behavior: "smooth"});
+  window.scrollTo(0, 0);
 }
 
+initQueue();
 render();
 </script>
-</body>
-</html>
+</body></html>
