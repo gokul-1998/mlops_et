@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLOps Exam Quiz</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0; font-family: Arial, sans-serif; background: #f4f7fb; color: #172033;
+}
+.container { max-width: 900px; margin: 0 auto; padding: 24px 16px 50px; }
+header {
+  background: #172033; color: white; padding: 28px; border-radius: 16px;
+  margin-bottom: 18px;
+}
+h1 { margin: 0 0 8px; font-size: 28px; }
+.subtitle { opacity: .85; }
+.progress-wrap { margin-top: 18px; background: #344056; border-radius: 20px; height: 10px; overflow: hidden; }
+.progress { height: 100%; width: 0%; background: #62d0ff; transition: width .2s; }
+.card {
+  background: white; border-radius: 16px; padding: 24px; margin-bottom: 16px;
+  box-shadow: 0 4px 18px rgba(0,0,0,.07);
+}
+.question { font-size: 18px; font-weight: 700; line-height: 1.45; margin-bottom: 18px; }
+.option {
+  display: block; padding: 13px 15px; border: 1px solid #d7deea; border-radius: 10px;
+  margin: 10px 0; cursor: pointer; transition: .15s;
+}
+.option:hover { background: #f5f9ff; border-color: #8ab8ff; }
+.option input { margin-right: 10px; }
+button {
+  border: 0; border-radius: 10px; padding: 13px 20px; font-size: 16px;
+  font-weight: 700; cursor: pointer; margin: 5px;
+}
+#submit { background: #1769e0; color: white; }
+#reset { background: #e8edf5; color: #172033; }
+#next { background: #198754; color: white; }
+.result {
+  display: none; background: white; border-radius: 16px; padding: 28px;
+  margin-top: 18px; box-shadow: 0 4px 18px rgba(0,0,0,.07);
+}
+.score { font-size: 38px; font-weight: 800; margin: 8px 0; }
+.correct { color: #16834b; }
+.wrong { color: #c62828; }
+.explanation {
+  margin-top: 8px; padding: 10px 12px; background: #f3f6fa; border-radius: 8px;
+  font-size: 14px;
+}
+.hidden { display: none !important; }
+.nav { text-align: center; margin: 20px 0; }
+.small { color: #667085; font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>MLOps Exam Quiz</h1>
+  <div class="subtitle">Interactive quiz based on the supplied study package — Q164 to Q184</div>
+  <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+  <div style="margin-top:10px" id="counter">Question 1 of 21</div>
+</header>
+
+<div id="quiz"></div>
+
+<div class="nav">
+  <button id="next" onclick="nextQuestion()">Next</button>
+  <button id="submit" onclick="submitQuiz()">Submit Quiz</button>
+  <button id="reset" onclick="resetQuiz()">Reset</button>
+</div>
+
+<div id="result" class="result"></div>
+</div>
+
+<script>
+const questions = [{"q": "Q164. Which data science lifecycle step does not require MLOps, DevOps suffices?", "type": "single", "options": ["A. Bias detection", "B. Model training & selection", "C. Feature engineering", "D. Champion/challenger evaluation and promotion", "E. Label drift detection"], "answer": ["C"]}, {"q": "Q165. Which set best represents governance concerns beyond model accuracy?", "type": "single", "options": ["A. Monitoring / Observability / Response", "B. CI/CD / Operations", "C. Logging / Tracing / Metrics", "D. Bias detection / Drift monitoring / Explainability", "E. Regulatory risk / Reputational harm / Change management"], "answer": ["D"]}, {"q": "Q166. What are the three production operations pillars?", "type": "single", "options": ["A. Monitoring / Observability / Response", "B. Detect / Understand / Act", "C. CI/CD / MLSecOps", "D. Explainability / Drift / Bias", "E. Infrastructure / Software / Configuration"], "answer": ["A"]}, {"q": "Q167. Which is NOT an example of a software-driven data source?", "type": "single", "options": ["A. OLTP DB backend PHP", "B. OpenAI-hosted endpoint", "C. Container logs", "D. Docker manifest", "E. CML report in GitHub"], "answer": ["D"]}, {"q": "Q168. Which use case is NOT well suited for an LLM?", "type": "single", "options": ["A. Macroeconomic policy reasoning", "B. Washing-machine manual targeted questions", "C. Rule-driven scanned-image classification", "D. Dynamic customer preference learning", "E. Risky-driving alerting from truck telematics"], "answer": ["E"]}, {"q": "Q169. In a Feast data model with PurchaseEvent as a fact and Customer/Channel/Product as dimensions, which statement is correct?", "type": "single", "options": ["A. PurchaseEvent is a dimension and Customer is a fact.", "B. Raw purchase events can be processed into features; dimensions act as entities.", "C. Feast cannot represent event-time data.", "D. Dimensions must always be stored as numerical features."], "answer": ["B"]}, {"q": "Q170. Which are valid Git basics?", "type": "multi", "options": ["A. Git tracks changes to files.", "B. git commit creates a commit.", "C. git status deletes untracked files.", "D. A branch is an independent repository.", "E. git clone copies a repository."], "answer": ["A", "B", "E"]}, {"q": "Q171. Which activities are within the scope of MLOps?", "type": "multi", "options": ["A. Model/data versioning", "B. Only writing model-training code", "C. CI/CD and automated testing", "D. Ignoring production monitoring", "E. Deployment and monitoring"], "answer": ["A", "C", "E"]}, {"q": "Q172. Which are examples of ML security attacks?", "type": "multi", "options": ["A. Data poisoning", "B. Model extraction", "C. Adversarial examples", "D. Membership inference", "E. Faster inference"], "answer": ["A", "C", "D"]}, {"q": "Q173. Which statements about Docker/Kubernetes/FastAPI are correct?", "type": "multi", "options": ["A. Docker packages applications into containers.", "B. Kubernetes can orchestrate containers.", "C. FastAPI is a Python web framework.", "D. Kubernetes is a database.", "E. Docker images can be used to create containers.", "F. FastAPI can expose HTTP APIs.", "G. Kubernetes can help with scaling."], "answer": ["A", "B", "E", "F", "G"]}, {"q": "Q174. Which statements correctly distinguish MLOps and LLMOps?", "type": "multi", "options": ["A. LLMOps includes concerns specific to LLM applications.", "B. MLOps and LLMOps are exactly identical in every concern.", "C. LLMOps can involve prompt/version management.", "D. MLOps covers model lifecycle and production operations.", "E. LLMOps has no evaluation concerns.", "F. LLM applications can require specialized observability."], "answer": ["A", "D", "F"]}, {"q": "Q175. Which are valid LLM cost-optimization approaches?", "type": "multi", "options": ["A. Caching repeated requests", "B. Always using the largest model", "C. Routing tasks to cheaper/smaller models when appropriate", "D. Increasing token usage unnecessarily", "E. Reducing unnecessary prompt/context tokens", "F. Monitoring token usage and cost"], "answer": ["A", "E", "F"]}, {"q": "Q176. Which are important aspects of observability?", "type": "multi", "options": ["A. Logs", "B. Randomly deleting metrics", "C. Metrics", "D. Ignoring traces", "E. Removing all alerts"], "answer": ["A", "C"]}, {"q": "Q177. Which CI/CD stages are relevant to classical ML?", "type": "multi", "options": ["I. Code testing", "II. Automatic deletion of production data", "III. Model/data validation", "IV. Build/deploy automation", "V. Disabling monitoring", "VI. Manual-only deployment", "VII. No version control", "VIII. Skipping tests", "IX. Ignoring artifacts", "X. Evaluation/quality checks"], "answer": ["I", "IV", "X"]}, {"q": "Q178. Which are valid Git-flow practices?", "type": "multi", "options": ["A. Work directly on protected main only", "B. Use feature branches for isolated work", "C. Never review changes", "D. Merge reviewed changes through the normal workflow", "E. Use pull requests for collaboration"], "answer": ["A", "D", "E"]}, {"q": "Q179. Which statements are correct for forecasting and feature consistency?", "type": "multi", "options": ["A. Training and serving features can use unrelated definitions.", "B. Point-in-time correctness matters for time-dependent features.", "C. Future information should be used freely during training.", "D. Feature consistency between training and serving is important.", "E. Leakage improves real-world reliability."], "answer": ["B", "D"]}, {"q": "Q180. Which tool is used for ML experiment tracking in the source material?", "type": "single", "options": ["A. MLflow", "B. Docker Compose", "C. Redis", "D. Nginx"], "answer": ["A"]}, {"q": "Q181. Which statements relate to LLMOps/RAG/production scaling?", "type": "multi", "options": ["A. RAG can ground generation using retrieved information.", "B. Production LLM systems need evaluation.", "C. Scaling concerns can include latency and throughput.", "D. RAG removes the need for monitoring.", "E. Prompt and model versions can matter in production."], "answer": ["B", "C", "E"]}, {"q": "Q182. Which are important ML data security/governance practices?", "type": "multi", "options": ["A. Access control", "B. Data lineage", "C. Give every user unrestricted access", "D. Ignore data provenance", "E. Auditing", "F. Protect sensitive data"], "answer": ["A", "B", "E", "F"]}, {"q": "Q183. Which are relevant to real-time inference/streaming?", "type": "multi", "options": ["A. Event streams can feed online inference pipelines.", "B. Real-time systems never have latency requirements.", "C. Online inference can require low-latency serving.", "D. Streaming is identical to batch processing in all respects."], "answer": ["A", "C"]}, {"q": "Q184. Which tools/workflows are relevant to GitHub Actions/CML/DVC?", "type": "multi", "options": ["A. GitHub Actions can automate CI workflows.", "B. DVC can version/manage data and model artifacts.", "C. CML is unrelated to CI.", "D. Automated evaluation can be reported in CI.", "E. DVC means Docker Version Control.", "F. CI can run tests on pushes/pull requests."], "answer": ["A", "B", "D", "F"]}];
+let current = 0;
+let answers = {};
+let submitted = false;
+
+function render() {
+  const q = questions[current];
+  document.getElementById("counter").textContent =
+    `Question ${current + 1} of ${questions.length}`;
+  document.getElementById("progress").style.width =
+    `${((current + 1) / questions.length) * 100}%`;
+
+  let inputType = q.type === "multi" ? "checkbox" : "radio";
+  let saved = answers[current] || [];
+  let options = q.options.map((opt, i) => {
+    let letter = opt.substring(0, opt.indexOf("."));
+    let checked = saved.includes(letter) ? "checked" : "";
+    return `<label class="option">
+      <input type="${inputType}" name="q" value="${letter}" ${checked}>
+      ${opt}
+    </label>`;
+  }).join("");
+
+  document.getElementById("quiz").innerHTML = `
+    <div class="card">
+      <div class="question">${q.q}</div>
+      <div class="small">${q.type === "multi" ? "Select all that apply." : "Select one answer."}</div>
+      ${options}
+    </div>`;
+}
+
+function saveCurrent() {
+  const selected = [...document.querySelectorAll('input[name="q"]:checked')]
+    .map(x => x.value);
+  answers[current] = selected;
+}
+
+function nextQuestion() {
+  saveCurrent();
+  if (current < questions.length - 1) {
+    current++;
+    render();
+    window.scrollTo({top: 0, behavior: "smooth"});
+  } else {
+    submitQuiz();
+  }
+}
+
+function submitQuiz() {
+  saveCurrent();
+  let score = 0;
+  let attempted = 0;
+  let details = "";
+
+  questions.forEach((q, i) => {
+    const user = (answers[i] || []).slice().sort();
+    const correct = q.answer.slice().sort();
+    if (user.length) attempted++;
+
+    const ok = JSON.stringify(user) === JSON.stringify(correct);
+    if (ok) score++;
+
+    details += `<div style="margin:12px 0" class="${ok ? "correct" : "wrong"}">
+      <b>${q.q.split(".")[0]}: ${ok ? "Correct" : "Wrong"}</b>
+      ${!ok ? `<div class="explanation">Correct answer: ${q.answer.join(", ")}</div>` : ""}
+    </div>`;
+  });
+
+  const percent = Math.round((score / questions.length) * 100);
+  document.getElementById("result").style.display = "block";
+  document.getElementById("result").innerHTML = `
+    <h2>Quiz Result</h2>
+    <div class="score">${score} / ${questions.length}</div>
+    <p><b>${percent}%</b> &nbsp; | &nbsp; Attempted: ${attempted} / ${questions.length}</p>
+    <hr>
+    ${details}
+  `;
+  submitted = true;
+  document.getElementById("result").scrollIntoView({behavior:"smooth"});
+}
+
+function resetQuiz() {
+  current = 0;
+  answers = {};
+  submitted = false;
+  document.getElementById("result").style.display = "none";
+  render();
+  window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+render();
+</script>
+</body>
+</html>
